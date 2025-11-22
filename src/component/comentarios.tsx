@@ -1,6 +1,8 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import gsap from "gsap";
 
 export default function Comentarios() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const COMENTARIOS = [
     {
       nombre: "María López",
@@ -58,24 +60,31 @@ export default function Comentarios() {
     return cols.map((col) => [...col, ...col, ...col, ...col]);
   }, []);
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const columnasAnimadas = gsap.utils.toArray<HTMLElement>(".comentarios-col");
+
+      columnasAnimadas.forEach((columna, index) => {
+        const start = index === 1 ? -25 : 0;
+        const end = index === 1 ? 0 : -25;
+
+        gsap.set(columna, { yPercent: start });
+
+        gsap
+          .timeline({ repeat: -1, yoyo: true, defaults: { ease: "none" } })
+          .to(columna, { yPercent: end, duration: 8 });
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <>
-      <style>{`
-        @keyframes scrollUp {
-          0% { transform: translateY(0); opacity: 1; }
-          100% { transform: translateY(-25%); opacity: 1; }
-        }
-        @keyframes scrollDown {
-          0% { transform: translateY(-25%); opacity: 1; }
-          100% { transform: translateY(0); opacity: 1; }
-        }
-        .scroll-up { animation: scrollUp 8s linear infinite; }
-        .scroll-down { animation: scrollDown 8s linear infinite; }
-      `}</style>
-
       <section
         id="comentarios"
         className="min-h-screen flex items-center justify-center relative bg-[#0e0e0e] text-white py-20 px-6 md:px-20"
+        ref={containerRef}
       >
         <div className="w-full max-w-7xl">
 
@@ -95,7 +104,7 @@ export default function Comentarios() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {columnas.map((columna, colIdx) => (
                 <div key={colIdx} className="overflow-hidden">
-                  <div className={colIdx === 1 ? "scroll-down" : "scroll-up"}>
+                  <div className="comentarios-col">
                     <div className="space-y-6">
                       {columna.map((item, index) => (
                         <div key={index} className="space-y-1">

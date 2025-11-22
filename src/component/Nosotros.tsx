@@ -19,37 +19,41 @@ export default function Nosotros() {
         stagger: 0.12,
       });
 
-      gsap.set(imgs, { opacity: 1 });
-      gsap.from(imgs, {
+      // Timeline de decorativos
+      const decorTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      decorTl.set(imgs, { opacity: 1 });
+      decorTl.from(imgs, {
         x: (i) => (i % 2 === 0 ? -80 : 80),
         y: (i) => (i % 2 === 0 ? 60 : -60),
         opacity: 0,
         duration: 1.4,
-        ease: "power3.out",
         stagger: 0.1,
       });
 
       // Scroll control con reset seguro al recargar lejos
-      gsap.to(imgs, {
-        x: (i) => (i % 2 === 0 ? -200 : 200),
-        y: (i) => (i % 2 === 0 ? 140 : -140),
-        opacity: 0,
-        ease: "power2.inOut",
-        duration: 1.4,
-        stagger: 0.1,
-        immediateRender: false,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "bottom top",
-          scrub: true,
-          onRefresh: (self) => {
-            if (!self.isActive) {
-              gsap.set(imgs, { x: 0, y: 0, opacity: 1 });
-            }
+      gsap
+        .timeline({
+          defaults: { ease: "power2.inOut" },
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top center",
+            end: "bottom top",
+            scrub: true,
+            onRefresh: (self) => {
+              if (!self.isActive) {
+                gsap.set(imgs, { x: 0, y: 0, opacity: 1 });
+              }
+            },
           },
-        },
-      });
+        })
+        .to(imgs, {
+          x: (i) => (i % 2 === 0 ? -200 : 200),
+          y: (i) => (i % 2 === 0 ? 140 : -140),
+          opacity: 0,
+          duration: 1.4,
+          stagger: 0.1,
+          immediateRender: false,
+        });
     }, sectionRef);
 
     return () => ctx.revert();

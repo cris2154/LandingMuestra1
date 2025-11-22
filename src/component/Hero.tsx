@@ -20,34 +20,46 @@ export default function Hero() {
         stagger: 0.08,
       });
 
-      // Entrada inicial de imágenes al cargar
+      // Timeline para todas las imágenes
       gsap.set(images, { opacity: 1 }); // asegurar visibilidad inicial (ej. pizza)
-      gsap.from(images, {
+
+      const imagesTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      imagesTl.from(images, {
         x: (index) => (index % 2 === 0 ? 120 : -120),
         y: (index) => (index % 2 === 0 ? -80 : 80),
         opacity: 0,
         duration: 1.6,
-        ease: "power3.out",
         stagger: 0.12,
         delay: 0.1,
       });
 
       // Control con scroll: salen y regresan según la barra de desplazamiento
-      gsap.to(images, {
-        x: (index) => (index % 2 === 0 ? 260 : -260),
-        y: (index) => (index % 2 === 0 ? -160 : 160),
-        opacity: 0,
-        ease: "power2.inOut",
-        duration: 1.4,
-        stagger: 0.12,
-        immediateRender: false,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
+      const scrollTl = gsap
+        .timeline({
+          defaults: { ease: "power2.inOut" },
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+            onLeave: () => {
+              gsap.set(images, { x: 0, y: 0, opacity: 1, clearProps: "all" });
+              scrollTl.pause();
+            },
+            onEnter: () => {
+              scrollTl.resume();
+            },
+          },
+        })
+        .to(images, {
+          x: (index) => (index % 2 === 0 ? 260 : -260),
+          y: (index) => (index % 2 === 0 ? -160 : 160),
+          opacity: 0,
+          duration: 1.4,
+          stagger: 0.12,
+          immediateRender: false,
+          overwrite: "auto",
+        }, 0);
     }, containerRef);
 
     return () => ctx.revert();

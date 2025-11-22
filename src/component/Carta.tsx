@@ -37,38 +37,41 @@ export default function Carta() {
         stagger: 0.1,
       });
 
-      // Entrada inicial de decorativos
-      gsap.set(imgs, { opacity: 1 });
-      gsap.from(imgs, {
+      // Timeline de decorativos (entrada)
+      const decorTl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      decorTl.set(imgs, { opacity: 1 });
+      decorTl.from(imgs, {
         x: (i) => (i % 2 === 0 ? -120 : 120),
         y: (i) => (i % 2 === 0 ? 80 : -80),
         opacity: 0,
         duration: 1.5,
-        ease: "power3.out",
         stagger: 0.12,
       });
 
-      // Scroll control: salen y regresan, con reset al recargar lejos
-      gsap.to(imgs, {
-        x: (i) => (i % 2 === 0 ? -260 : 260),
-        y: (i) => (i % 2 === 0 ? 160 : -160),
-        opacity: 0,
-        ease: "power2.inOut",
-        duration: 1.4,
-        stagger: 0.12,
-        immediateRender: false,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "bottom top",
-          scrub: true,
-          onRefresh: (self) => {
-            if (!self.isActive) {
-              gsap.set(imgs, { x: 0, y: 0, opacity: 1 });
-            }
+      // Timeline con scroll: salen y regresan, con reset al recargar lejos
+      gsap
+        .timeline({
+          defaults: { ease: "power2.inOut" },
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top center",
+            end: "bottom top",
+            scrub: true,
+            onRefresh: (self) => {
+              if (!self.isActive) {
+                gsap.set(imgs, { x: 0, y: 0, opacity: 1 });
+              }
+            },
           },
-        },
-      });
+        })
+        .to(imgs, {
+          x: (i) => (i % 2 === 0 ? -260 : 260),
+          y: (i) => (i % 2 === 0 ? 160 : -160),
+          opacity: 0,
+          duration: 1.4,
+          stagger: 0.12,
+          immediateRender: false,
+        });
     }, sectionRef);
 
     return () => ctx.revert();
