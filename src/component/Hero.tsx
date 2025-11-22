@@ -6,6 +6,11 @@ export default function Hero() {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    if (isMobile) {
+      return;
+    }
+
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
@@ -68,25 +73,25 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center relative bg-[#0e0e0e] text-white"
+      className="min-h-screen flex items-center justify-center relative bg-[#0e0e0e] text-white px-5 pt-28 pb-16 md:pt-32"
       ref={containerRef}
     >
-      <div className="text-center max-w-2xl z-20">
-        <p className="hero-subtitle mb-3 text-gray-300 hero-text">
+      <div className="text-center max-w-2xl z-20 space-y-4">
+        <p className="hero-subtitle text-sm md:text-base text-gray-300 hero-text">
           Bienvenido a nuestro restaurante
         </p>
 
-        <h1 className="hero-title text-5xl md:text-6xl font-bold leading-tight hero-text">
+        <h1 className="hero-title text-4xl md:text-6xl font-bold leading-tight hero-text">
           Comida deliciosa a un paso de tu mesa.
         </h1>
 
-        <p className="text-gray-400 mt-4 mb-8 hero-text">
+        <p className="text-gray-400 md:text-lg hero-text">
           Sabores únicos, ingredientes frescos y ambiente acogedor.
         </p>
 
         <a
           href="#carta"
-          className="hero-button px-10 py-3 rounded-full text-black font-bold text-lg hero-text"
+          className="hero-button inline-flex px-10 py-3 rounded-full text-black font-bold text-lg hero-text"
           style={{ backgroundColor: "#70E000" }}
         >
           Ver carta
@@ -96,28 +101,28 @@ export default function Hero() {
         src="/pizza.png"
         alt="Pizza principal"
         loading="lazy"
-        className="hero-pizza absolute right-8 top-20 w-[360px] select-none pointer-events-none hero-image"
+        className="hero-pizza absolute right-2 top-28 w-36 sm:w-52 md:w-[360px] opacity-90 select-none pointer-events-none hero-image z-10"
       />
 
       <img
         src="/2.png"
         alt="Decoración 1"
         loading="lazy"
-        className="hero-img2 absolute left-6 top-28 w-40 opacity-90 select-none pointer-events-none hero-image"
+        className="hero-img2 absolute left-2 top-20 w-20 sm:w-28 md:w-40 opacity-70 select-none pointer-events-none hero-image z-10"
       />
 
       <img
         src="/3.png"
         alt="Decoración 2"
         loading="lazy"
-        className="hero-img3 absolute left-40 bottom-20 w-[200px] opacity-90 select-none pointer-events-none hero-image"
+        className="hero-img3 absolute left-4 bottom-12 w-20 sm:w-28 md:w-[200px] opacity-70 select-none pointer-events-none hero-image z-10"
       />
 
       <img
         src="/4.png"
         alt="Decoración 3"
         loading="lazy"
-        className="hero-img4 absolute right-0 bottom-0 w-[280px] opacity-90 select-none pointer-events-none hero-image"
+        className="hero-img4 absolute right-1 bottom-2 w-24 sm:w-36 md:w-[280px] opacity-70 select-none pointer-events-none hero-image z-10"
       />
     </section>
   );

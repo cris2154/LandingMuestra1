@@ -56,7 +56,6 @@ export default function Comentarios() {
     COMENTARIOS.forEach((item, i) => {
       cols[i % 3].push(item);
     });
-    // Duplicar contenido múltiples veces para loop infinito real
     return cols.map((col) => [...col, ...col, ...col, ...col]);
   }, []);
 
@@ -96,8 +95,8 @@ export default function Comentarios() {
             </p>
           </div>
 
-          {/* Carrusel infinito por columnas, manteniendo estilos de los comentarios */}
-          <div className="relative overflow-hidden max-h-[700px]">
+          {/* Carrusel infinito por columnas, con altura acotada en móviles */}
+          <div className="relative overflow-hidden max-h-[520px] md:max-h-[700px]">
             <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#0e0e0e] via-[#0e0e0e]/60 to-transparent pointer-events-none z-10" />
             <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0e0e0e] via-[#0e0e0e]/60 to-transparent pointer-events-none z-10" />
 

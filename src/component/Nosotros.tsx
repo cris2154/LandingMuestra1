@@ -6,6 +6,11 @@ export default function Nosotros() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    if (isMobile) {
+      return;
+    }
+
     gsap.registerPlugin(ScrollTrigger);
     const imgs = gsap.utils.toArray<HTMLElement>(".nosotros-image");
 
@@ -127,19 +132,19 @@ export default function Nosotros() {
         src="/4.png"
         alt="Decoración lateral"
         loading="lazy"
-        className="absolute left-4 bottom-10 w-70 md:w-48 opacity-90 select-none pointer-events-none nosotros-image"
+        className="absolute left-4 bottom-8 w-28 sm:w-36 md:w-48 opacity-90 select-none pointer-events-none nosotros-image"
       />
       <img
         src="/5.png"
         alt="Decoración superior"
         loading="lazy"
-        className="absolute right-6 top-16 w-44 md:w-56 opacity-90 select-none pointer-events-none nosotros-image"
+        className="absolute right-4 top-10 w-32 sm:w-40 md:w-56 opacity-90 select-none pointer-events-none nosotros-image"
       />
       <img
         src="/6.png"
         alt="Decoración inferior"
         loading="lazy"
-        className="absolute right-0 bottom-0 w-52 md:w-64 opacity-90 select-none pointer-events-none nosotros-image"
+        className="absolute right-0 bottom-0 w-36 sm:w-48 md:w-64 opacity-90 select-none pointer-events-none nosotros-image"
       />
     </section>
   );

@@ -24,6 +24,11 @@ export default function Carta() {
   const sectionRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    if (isMobile) {
+      return;
+    }
+
     gsap.registerPlugin(ScrollTrigger);
     const imgs = gsap.utils.toArray<HTMLElement>(".carta-image");
 
@@ -167,13 +172,13 @@ export default function Carta() {
         src="/7.png"
         alt="Decoración de parrilla"
         loading="lazy"
-        className="absolute left-3 bottom-10 w-36 md:w-48 opacity-90 select-none pointer-events-none carta-image"
+        className="absolute left-3 bottom-10 w-24 sm:w-32 md:w-48 opacity-80 select-none pointer-events-none carta-image"
       />
       <img
         src="/8.png"
         alt="Decoración de ingredientes"
         loading="lazy"
-        className="absolute right-2 bottom-0 w-48 md:w-64 opacity-90 select-none pointer-events-none carta-image"
+        className="absolute right-2 bottom-2 w-32 sm:w-44 md:w-64 opacity-80 select-none pointer-events-none carta-image"
       />
     </section>
   );
